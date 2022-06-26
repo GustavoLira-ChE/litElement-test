@@ -13,6 +13,9 @@ class GetData extends LitElement{
     firstUpdated(){ 
         this.getData();
     }
+    updated(){ 
+        this.getData();
+    }
     _sendData(data){
         this.dispatchEvent(new CustomEvent('ApiCall',{
             detail: {data}, bubbles: true, composed: true
@@ -22,7 +25,6 @@ class GetData extends LitElement{
         const response = await fetch(this.url);
         const jsonResponse = await response.json();
         this.data = jsonResponse.data;
-        console.log(this.data);
         this._sendData(this.data);
     }
 }
