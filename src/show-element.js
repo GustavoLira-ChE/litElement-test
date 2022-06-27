@@ -10,7 +10,17 @@ class ShowElement extends LitElement{
     }
     static get styles(){
         return css`
+        #app-container{
+            background-color: hsl(7, 93%, 12%);
+            min-height: 100vh;
+        }
+        h1{
+            margin: 0;
+            padding: 8px;
+            color: white;
+        }
         .cards-container{
+            margin-top: 32px;
             display: grid;
             gap: 32px;
             grid-template-columns: repeat(auto-fill, minmax(432px, 1fr));
@@ -27,6 +37,8 @@ class ShowElement extends LitElement{
         .card-wrapper{
             position: relative;
             display: flex;
+            background-color: hsl(54, 46%, 63%);
+            border-radius: 8px;
         }
         .card-wrapper-image{
             padding: 16px;
@@ -51,9 +63,14 @@ class ShowElement extends LitElement{
             this.data = e.detail.data;
         })
     }
+    firstUpdated(){
+        this.addEventListener('FilterApiCall', e => {
+            this.data = e.detail.data;
+        })
+    }
     render(){
         return html`
-            <get-data url="https://db.ygoprodeck.com/api/v7/cardinfo.php"></get-data>
+        <div id="app-container">
             <h1>Yugioh cards list</h1>
             <filter-nav></filter-nav>
             <div class="cards-container">
@@ -83,6 +100,7 @@ class ShowElement extends LitElement{
                 </div>
             </div>
             `)}
+        </div>
         `
     }
 }
