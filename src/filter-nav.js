@@ -9,6 +9,41 @@ class FilterNav extends LitElement{
             data: {type: Array},
         }
     }
+    static get styles(){
+        return css`
+        .filter-container{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h4{
+            margin: 0;
+            padding: 8px;
+            color: white;
+        }
+        .filter-inputs{
+            display: grid;
+            gap: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            justify-content: space-around;
+            justify-items: center;
+            padding: 8px;
+        }
+        .filter-inputs div{
+            padding: 8px;
+
+        }
+        .filter-inputs div label{
+            width: 50px;
+            color: white;
+        }
+        .filter-search{
+            width: 90%;
+            margin-top: auto;
+            align-self: center;
+        }
+        `
+    }
     constructor(){    
         super();
         this.data = [];
@@ -21,11 +56,13 @@ class FilterNav extends LitElement{
     firstUpdated(){
         this.firstRender();
     }
+    
     render(){
         return html`
+        <div class="filter-container">
             <get-data url="https://db.ygoprodeck.com/api/v7/cardinfo.php"></get-data>
             <h4>You can find card by Name, Race, Attribute, Type or Archetype</h4>
-            <div>
+            <div class="filter-inputs">
                 <div>
                     <label type="race">Name</label>
                     <input type="text" name="name" id= "name" placeholder="Card name">
@@ -48,8 +85,8 @@ class FilterNav extends LitElement{
                 
                 </div>
             </div>
-            <button @click=${this.filterData}>Search</button>
-
+            <button class="filter-search" @click=${this.filterData}>Search</button>
+        </div>
         `
     }
     _sendData(data){
@@ -69,10 +106,10 @@ class FilterNav extends LitElement{
         const filterArray = this.inputs();
         this.data = this.data
             .filter(item => filterArray[0] ?item.name.match(filterArray[0]) : item)
-            .filter(item => filterArray[1] ? item.race.match(filterArray[1]) : item)
-            .filter(item => filterArray[2] ? item.attribute.match(filterArray[2]) : item)
-            .filter(item => filterArray[3] ? item.type.match(filterArray[3]) : item)
-            .filter(item => filterArray[4] ? item.archetype.match(filterArray[4]) : item)
+            .filter(item => filterArray[1] ? item.race === filterArray[1] : item)
+            .filter(item => filterArray[2] ? item.attribute === filterArray[2] : item)
+            .filter(item => filterArray[3] ? item.type === filterArray[3] : item)
+            .filter(item => filterArray[4] ? item.archetype === filterArray[4] : item)
         this._sendData(this.data);
         this.addEventListener('ApiCall', e => {
             this.data = e.detail.data;
